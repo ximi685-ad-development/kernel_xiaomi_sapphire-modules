@@ -1,5 +1,5 @@
 # Qualcomm LA layout by default; the LineageOS inline build passes DATAIPA_ROOT
-DATAIPA_ROOT ?= $(srctree)/../../vendor/qcom/opensource/dataipa
+DATAIPA_ROOT ?= $(srctree)/../sapphire-modules/qcom/opensource/dataipa
 
 # SPDX-License-Identifier: GPL-2.0-only
 DATAIPADRVTOP = $(srctree)/techpack/dataipa/drivers/platform/msm
