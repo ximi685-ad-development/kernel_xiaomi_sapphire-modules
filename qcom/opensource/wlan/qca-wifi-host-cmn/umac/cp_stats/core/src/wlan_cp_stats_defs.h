@@ -42,6 +42,35 @@
 #include <wlan_cp_stats_mc_defs.h>
 #endif
 
+/* TWT_PEER_MAX_SESSIONS and HOST_TWT_SESSION_* come from
+ * wlan_cp_stats_mc_defs.h, but that include only fires when
+ * WLAN_FEATURE_MIB_STATS is defined at preprocess time. The TWT guard
+ * below uses a different pair of flags (WLAN_SUPPORT_TWT &&
+ * WLAN_TWT_CONV_SUPPORTED), so under some config combinations the
+ * include is skipped but the TWT field is still compiled, leaving
+ * TWT_PEER_MAX_SESSIONS undefined. Re-include unconditionally inside
+ * the same guard the field uses. Both are idempotent.
+ */
+#if defined(WLAN_SUPPORT_TWT) && defined(WLAN_TWT_CONV_SUPPORTED)
+#include <wmi_unified_twt_param.h>
+#ifndef TWT_PEER_MAX_SESSIONS
+#define TWT_PEER_MAX_SESSIONS 1
+#endif
+#endif
+
+/* TWT_PEER_MAX_SESSIONS and HOST_TWT_SESSION_* are normally provided
+ * by wlan_cp_stats_mc_defs.h, but only when WLAN_SUPPORT_TWT is
+ * defined at the time of inclusion. Re-declare them here so the TWT
+ * struct field below compiles whenever the same guard that enables it
+ * is true. Both #include and #define are idempotent.
+ */
+#if defined(WLAN_SUPPORT_TWT) && defined(WLAN_TWT_CONV_SUPPORTED)
+#include <wmi_unified_twt_param.h>
+#ifndef TWT_PEER_MAX_SESSIONS
+#define TWT_PEER_MAX_SESSIONS 1
+#endif
+#endif
+
 /* noise floor */
 #define CP_STATS_TGT_NOISE_FLOOR_DBM (-96)
 
